@@ -1,10 +1,21 @@
-import { Navigate } from "react-router";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const ProtectedRoute = ({children}) => {
+    const navigate = useNavigate();
     const token = document.cookie.split('=')[1];
-    // if (!token) {
-    //     return <Navigate to='/login' />;
-    // }
+
+    useEffect(() => {
+        if (!token) {
+            Swal.fire({
+                title: 'Your sesion is expired!',
+                icon: 'error'
+            })
+           navigate('/login', { replace: true })
+        }
+
+    }, [token])
     
     return children
 }
